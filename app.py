@@ -4,6 +4,35 @@ import math
 # 1. Configuración de página ancha (Layout wide) para diseño profesional
 st.set_page_config(page_title="KeyzCAD Structure", page_icon="🔑", layout="wide")
 
+# 👁️ INYECCIÓN DE CSS: Cambiamos los fondos de la app a la paleta KeyzCAD Pro
+st.markdown("""
+    <style>
+        /* Fondo de la app principal (Oscuro profundo) */
+        .stApp {
+            background-color: #0d0d11;
+            color: #f0f0f5;
+        }
+        
+        /* Fondo del menú lateral (Degradado morado Keyz) */
+        [data-testid="stSidebar"] {
+            background: linear-gradient(180deg, #1f0d3d 0%, #0a0414 100%);
+            border-right: 1px solid #3d1f75;
+        }
+        
+        /* Estilo para los títulos principales */
+        h1, h2, h3 {
+            color: #b380ff !important;
+            font-family: 'sans-serif';
+        }
+        
+        /* Estilo para las etiquetas de los botones de navegación */
+        .stRadio label {
+            color: #d1b3ff !important;
+            font-size: 16px !important;
+        }
+    </style>
+""", unsafe_allow_html=True)
+
 # Base de datos cargada en la aplicación web
 datos_peru = {
     "Nueva Cajamarca": {
@@ -28,10 +57,12 @@ datos_peru = {
     }
 }
 
-# 2. Menú de Navegación en la Barra Lateral (Indestructible)
-st.sidebar.title("🧭 Navegación")
+# 2. Menú de Navegación en la Barra Lateral
+st.sidebar.markdown("<h2 style='text-align: center; color: #cc99ff;'>KeyzCAD Pro</h2>", unsafe_allow_html=True)
+st.sidebar.write("---")
+
 seccion_activa = st.sidebar.radio(
-    "Selecciona una sección:",
+    "🧭 Navegación:",
     ["Inicio", "KeyzCAD Simulador", "Sustento Científico y Normas"]
 )
 
@@ -71,16 +102,13 @@ if seccion_activa == "Inicio":
     with col2:
         st.markdown("### 🛠️ Ficha del Entorno")
         st.success("**Desarrollo:** Python 3\n\n**Framework:** Streamlit Web\n\n**Área:** Tecnología e Innovación")
-        st.markdown("---")
-        st.caption("Usa el menú de la barra lateral izquierda para ir al **KeyzCAD Simulador**.")
 
 # -------------------------------------------------------------------
 # SECCIÓN 2: SIMULADOR (Tus cálculos y panel interactivo)
 # -------------------------------------------------------------------
 elif seccion_activa == "KeyzCAD Simulador":
     st.title("📊 Panel de Simulación y Modelamiento Estructural")
-    st.markdown("Modifica las dimensiones en el panel lateral para actualizar el presupuesto y diseño geométrico.")
-
+    
     st.sidebar.write("---")
     st.sidebar.header("⚙️ Configuración")
     ciudad = st.sidebar.selectbox("Selecciona la localidad:", list(datos_peru.keys()))
@@ -89,7 +117,6 @@ elif seccion_activa == "KeyzCAD Simulador":
 
     info = datos_peru[ciudad]
 
-    # Fórmulas matemáticas exactas
     mitad_ancho = ancho / 2
     angulo_rad = math.radians(info["angulo_ideal"])
     altura_centro = mitad_ancho * math.tan(angulo_rad)
@@ -117,42 +144,19 @@ elif seccion_activa == "KeyzCAD Simulador":
     with col_inf1:
         st.subheader("🌱 Material Ecológico Sugerido")
         st.info(info["material_eco"])
-        st.caption("Nota: El uso de coberturas orgánicas o tejas de arcilla locales reduce la transferencia térmica al interior.")
         
     with col_inf2:
         st.subheader("💰 Presupuesto Estimado y Logística")
         st.success(f"**Costo Estimado Materiales:** S/. {round(costo_total, 2)} Soles")
-        st.warning(f"**Volumen Comercial:** Requiere aprox. **{cantidad_calaminas}** planchas de calamina estándar (1.44 m² útiles).")
+        st.warning(f"**Volumen Comercial:** Requiere aprox. **{cantidad_calaminas}** planchas de calamina estándar.")
 
 # -------------------------------------------------------------------
 # SECCIÓN 3: SUSTENTO (Tus escudos de defensa científica)
 # -------------------------------------------------------------------
 elif seccion_activa == "Sustento Científico y Normas":
     st.title("📚 Sustento Técnico y Marco Normativo")
-    st.markdown("Validación científica que respalda las constantes preestablecidas en el algoritmo.")
-    
-    st.write("---")
     
     st.markdown("### 🏢 1. Reglamento Nacional de Edificaciones (RNE)")
     st.write(
-        "Los ángulos de inclinación asignados en el diccionario de datos (como los 35° para Nueva Cajamarca "
-        "o los 45° para Iquitos) no son arbitrarios. Responden a las exigencias de la **Norma Técnica E.080** "
-        "y las especificaciones de diseño estructural para zonas con altas descargas pluviales en el Perú, "
-        "las cuales dictan pendientes no menores al 30% - 45% para evitar sobrecargas por acumulación de agua."
-    )
-    
-    st.markdown("### 🌦️ 2. Rigurosidad Meteorológica (SENAMHI)")
-    st.write(
-        "El software vincula cada distrito con estaciones meteorológicas reales (ej. Estación Naranjillo en Rioja). "
-        "Las sugerencias de aleros protectores extendidos (hasta 1.5 metros) se justifican por los históricos "
-        "de precipitación acumulada y la acción conjunta de ráfagas de viento locales, protegiendo los muros y "
-        "cimientos de la erosión hídrica."
-    )
-    
-    st.markdown("### 📐 3. Verificación de Algoritmos (Casos de Prueba)")
-    st.write(
-        "La precisión de las métricas numéricas se autovalida mediante funciones trigonométricas puras. "
-        "Al procesar la proyección de la pendiente como la secante geométrica del plano base, el sistema asegura "
-        "un error de cálculo de 0% en la adquisición de materiales comerciales, eliminando el desecho "
-        "presupuestal clásico de la autoconstrucción."
+        "Los ángulos de inclinación asignados en el diccionario de datos responden a las exigencias de la **Norma Técnica E.080**..."
     )
