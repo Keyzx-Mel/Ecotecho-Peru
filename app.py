@@ -2,7 +2,6 @@ import streamlit as st
 import math
 
 # Intenta importar la barra de navegación horizontal. 
-# Si aún no está instalada en el servidor de Streamlit, usamos el menú clásico de respaldo automáticamente.
 try:
     from streamlit_navigation_bar import st_navbar
     BARRA_DISPONIBLE = True
@@ -40,25 +39,11 @@ datos_peru = {
 paginas = ["Inicio", "KeyzCAD Simulador", "Sustento Científico y Normas"]
 
 if BARRA_DISPONIBLE:
-    styles = {
-        "nav": {
-            "background-color": "#1E1E24", 
-            "justify-content": "center",
-        },
-        "text": {
-            "color": "#FFFFFF",
-            "font-size": "16px",
-            "font-family": "sans-serif",
-        },
-        "active": {
-            "color": "#00FFCC", 
-            "font-weight": "bold",
-            "text-decoration": "underline",
-        }
-    }
-    seccion_activa = st_navbar(paginas, styles=styles)
+    # Quitamos el diccionario complejo que causaba el StreamlitAPIException
+    # Dejamos que use los estilos limpios nativos de la barra
+    seccion_activa = st_navbar(paginas)
 else:
-    # Respaldo nativo si la librería externa tarda en cargar
+    # Respaldo nativo si la librería falla
     seccion_activa = st.radio("Navegación Interna:", paginas, horizontal=True)
     st.write("---")
 
@@ -89,7 +74,7 @@ if seccion_activa == "Inicio":
         
         st.markdown("### 💻 ¿De qué trata el software?")
         st.write(
-            "**KeyzCAD Structure** es un entorno informático de simulación que procesa las dimensiones espaciales "
+            "**KeyzCAD Structure** es un entorno informático de simulación que procesa las dimensions espaciales "
             "deseadas para una vivienda y las contrasta con una base de datos climática geo-referenciada. El sistema "
             "determina al instante alturas críticas, áreas inclinadas exactas, presupuestos aproximados y "
             "materiales alternativos eco-amigables de bajo impacto térmico."
