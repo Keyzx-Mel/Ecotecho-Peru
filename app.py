@@ -104,7 +104,7 @@ datos_peru = {
 }
 
 # --- IMAGEN DE LOGO EN LA BARRA LATERAL ---
-URL_DEL_LOGO = "https://cdn-icons-png.flaticon.com/512/609/609803.png"
+URL_DEL_LOGO = "logo_keyz.png"
 
 st.sidebar.image(URL_DEL_LOGO, use_container_width=True)
 st.sidebar.markdown("<h2 style='text-align: center; color: #cc99ff; font-size: 26px; margin-top: 5px; margin-bottom: 0px;'>KeyzCAD Pro</h2>", unsafe_allow_html=True)
