@@ -1,14 +1,6 @@
 import streamlit as st
 import math
 
-# Intenta importar la barra de navegación horizontal. 
-# Si aún no está instalada en el servidor de Streamlit, usamos el menú clásico de respaldo automáticamente.
-try:
-    from streamlit_navigation_bar import st_navbar
-    BARRA_DISPONIBLE = True
-except ImportError:
-    BARRA_DISPONIBLE = False
-
 # 1. Configuración de página ancha (Layout wide) para diseño profesional
 st.set_page_config(page_title="KeyzCAD Structure", page_icon="🔑", layout="wide")
 
@@ -36,31 +28,12 @@ datos_peru = {
     }
 }
 
-# 2. Configuración y Renderizado del Menú Superior
-paginas = ["Inicio", "KeyzCAD Simulador", "Sustento Científico y Normas"]
-
-if BARRA_DISPONIBLE:
-    styles = {
-        "nav": {
-            "background-color": "#1E1E24", 
-            "justify-content": "center",
-        },
-        "text": {
-            "color": "#FFFFFF",
-            "font-size": "16px",
-            "font-family": "sans-serif",
-        },
-        "active": {
-            "color": "#00FFCC", 
-            "font-weight": "bold",
-            "text-decoration": "underline",
-        }
-    }
-    seccion_activa = st_navbar(paginas, styles=styles)
-else:
-    # Respaldo nativo si la librería externa tarda en cargar
-    seccion_activa = st.radio("Navegación Interna:", paginas, horizontal=True)
-    st.write("---")
+# 2. Menú de Navegación en la Barra Lateral (Indestructible)
+st.sidebar.title("🧭 Navegación")
+seccion_activa = st.sidebar.radio(
+    "Selecciona una sección:",
+    ["Inicio", "KeyzCAD Simulador", "Sustento Científico y Normas"]
+)
 
 # -------------------------------------------------------------------
 # SECCIÓN 1: INICIO (El Problema, Objetivos y Qué es el Software)
@@ -99,7 +72,7 @@ if seccion_activa == "Inicio":
         st.markdown("### 🛠️ Ficha del Entorno")
         st.success("**Desarrollo:** Python 3\n\n**Framework:** Streamlit Web\n\n**Área:** Tecnología e Innovación")
         st.markdown("---")
-        st.caption("Pasa a la pestaña **KeyzCAD Simulador** en la barra superior para iniciar el modelamiento.")
+        st.caption("Usa el menú de la barra lateral izquierda para ir al **KeyzCAD Simulador**.")
 
 # -------------------------------------------------------------------
 # SECCIÓN 2: SIMULADOR (Tus cálculos y panel interactivo)
@@ -108,15 +81,15 @@ elif seccion_activa == "KeyzCAD Simulador":
     st.title("📊 Panel de Simulación y Modelamiento Estructural")
     st.markdown("Modifica las dimensiones en el panel lateral para actualizar el presupuesto y diseño geométrico.")
 
-    # Activamos los controles laterales SOLO para esta sección
-    st.sidebar.header("⚙️ Configuración de la Vivienda")
+    st.sidebar.write("---")
+    st.sidebar.header("⚙️ Configuración")
     ciudad = st.sidebar.selectbox("Selecciona la localidad:", list(datos_peru.keys()))
     ancho = st.sidebar.slider("Ancho de la casa (metros):", 3.0, 15.0, 6.0, 0.5)
     largo = st.sidebar.slider("Largo de la casa (metros):", 4.0, 20.0, 8.0, 0.5)
 
     info = datos_peru[ciudad]
 
-    # Ejecución de tus fórmulas matemáticas exactas
+    # Fórmulas matemáticas exactas
     mitad_ancho = ancho / 2
     angulo_rad = math.radians(info["angulo_ideal"])
     altura_centro = mitad_ancho * math.tan(angulo_rad)
@@ -124,7 +97,6 @@ elif seccion_activa == "KeyzCAD Simulador":
     cantidad_calaminas = math.ceil(area_inclinada / 1.44)
     costo_total = area_inclinada * info["costo_m2_soles"]
 
-    # Renderizado en pantalla principal con organización de columnas anchas
     st.markdown(f"### 📍 Localidad Activa: {ciudad} | `Datos: {info['estacion']}`")
     st.markdown(f"**Clasificación de Entorno:** *{info['clima']}*")
     st.write("---")
