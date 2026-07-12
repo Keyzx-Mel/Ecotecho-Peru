@@ -4,7 +4,7 @@ import math
 # 1. Configuración de página ancha (Layout wide) para diseño profesional
 st.set_page_config(page_title="KeyzCAD Structure", page_icon="🔑", layout="wide")
 
-# 👁️ INYECCIÓN DE CSS: Mantenemos la paleta KeyzCAD Pro
+# 👁️ INYECCIÓN DE CSS: Mantenemos la paleta KeyzCAD Pro y añadimos la animación del texto
 st.markdown("""
     <style>
         /* Fondo de la app principal (Oscuro profundo) */
@@ -29,6 +29,52 @@ st.markdown("""
         .stRadio label {
             color: #d1b3ff !important;
             font-size: 16px !important;
+        }
+
+        /* --- CONTENEDOR Y ANIMACIÓN DEL TEXTO DESLIZANTE --- */
+        .contenedor-animado {
+            height: 50px;
+            overflow: hidden;
+            margin-top: 10px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+        }
+
+        .texto-estatico {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ffffff;
+            margin-right: 10px;
+        }
+
+        .caja-palabras {
+            height: 45px;
+            overflow: hidden;
+        }
+
+        .lista-palabras {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            animation: deslizar 9s infinite ease-in-out;
+        }
+
+        .lista-palabras li {
+            height: 45px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #cc99ff;
+            display: flex;
+            align-items: center;
+        }
+
+        /* El truco de los fotogramas para mover el texto hacia arriba */
+        @keyframes deslizar {
+            0%, 25% { transform: translateY(0); }
+            33%, 58% { transform: translateY(-45px); }
+            66%, 91% { transform: translateY(-90px); }
+            100% { transform: translateY(0); }
         }
     </style>
 """, unsafe_allow_html=True)
@@ -57,8 +103,7 @@ datos_peru = {
     }
 }
 
-# --- NUEVO: IMAGEN DE LOGO EN LA BARRA LATERAL ---
-# Puse un icono técnico de una casa/llave temporal. Cuando tengas tu logo, pones su nombre de archivo aquí (ej: "mi_logo.png")
+# --- IMAGEN DE LOGO EN LA BARRA LATERAL ---
 URL_DEL_LOGO = "https://cdn-icons-png.flaticon.com/512/609/609803.png"
 
 st.sidebar.image(URL_DEL_LOGO, use_container_width=True)
@@ -77,6 +122,20 @@ seccion_activa = st.sidebar.radio(
 if seccion_activa == "Inicio":
     st.title("🔑 KeyzCAD Structure")
     st.subheader("Optimización de Techos Bioclimáticos - FENCYT 2026")
+    
+    # NUEVO: Insertamos el bloque HTML con la animación de texto deslizante
+    st.markdown("""
+        <div class="contenedor-animado">
+            <span class="texto-estatico">Especializado en</span>
+            <div class="caja-palabras">
+                <ul class="lista-palabras">
+                    <li>🌧️ Lluvias Torrenciales</li>
+                    <li>🛡️ Prevención de Riesgos</li>
+                    <li>💰 Ahorro de Materiales</li>
+                </ul>
+            </div>
+        </div>
+    """, unsafe_allow_html=True)
     
     col1, col2 = st.columns([2, 1])
     
