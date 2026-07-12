@@ -4,7 +4,7 @@ import math
 # 1. Configuración de página ancha (Layout wide) para diseño profesional
 st.set_page_config(page_title="KeyzCAD Structure", page_icon="🔑", layout="wide")
 
-# 👁️ INYECCIÓN DE CSS: Cambiamos los fondos de la app a la paleta KeyzCAD Pro
+# 👁️ INYECCIÓN DE CSS: Mantenemos la paleta KeyzCAD Pro
 st.markdown("""
     <style>
         /* Fondo de la app principal (Oscuro profundo) */
@@ -57,10 +57,15 @@ datos_peru = {
     }
 }
 
-# 2. Menú de Navegación en la Barra Lateral
-st.sidebar.markdown("<h2 style='text-align: center; color: #cc99ff;'>KeyzCAD Pro</h2>", unsafe_allow_html=True)
+# --- NUEVO: IMAGEN DE LOGO EN LA BARRA LATERAL ---
+# Puse un icono técnico de una casa/llave temporal. Cuando tengas tu logo, pones su nombre de archivo aquí (ej: "mi_logo.png")
+URL_DEL_LOGO = "https://cdn-icons-png.flaticon.com/512/609/609803.png"
+
+st.sidebar.image(URL_DEL_LOGO, use_container_width=True)
+st.sidebar.markdown("<h2 style='text-align: center; color: #cc99ff; font-size: 26px; margin-top: 5px; margin-bottom: 0px;'>KeyzCAD Pro</h2>", unsafe_allow_html=True)
 st.sidebar.write("---")
 
+# 2. Menú de Navegación en la Barra Lateral
 seccion_activa = st.sidebar.radio(
     "🧭 Navegación:",
     ["Inicio", "KeyzCAD Simulador", "Sustento Científico y Normas"]
