@@ -164,8 +164,8 @@ def generar_pdf(ciudad, ancho, largo, info, altura, area, calaminas, costo):
     pdf.cell(0, 5, "Calculos estructurales generados algoritmicamente por KeyzCAD Structure v1.0.", ln=True, align="C")
     pdf.cell(0, 5, "Basado en exigencias tecnicas de las Normas RNE E.080 y E.020.", ln=True, align="C")
     
-    return pdf.output()
-
+    return bytes(pdf.output())
+    
 # Base de datos cargada en la aplicación web
 datos_peru = {
     "Nueva Cajamarca": {
