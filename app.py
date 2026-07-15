@@ -1,10 +1,11 @@
 import streamlit as st
 import math
+from fpdf import FPDF  # Importamos la librería para crear PDFs
 
 # 1. Configuración de página ancha (Layout wide) para diseño profesional
 st.set_page_config(page_title="KeyzCAD Structure", page_icon="🔑", layout="wide")
 
-# 👁️ INYECCIÓN DE CSS: Mantenemos la paleta KeyzCAD Pro y añadimos la animación del texto
+# 👁️ INYECCIÓN DE CSS: Estilos de la paleta KeyzCAD Pro y mejoras de tarjetas
 st.markdown("""
     <style>
         /* Fondo de la app principal (Oscuro profundo) */
@@ -29,6 +30,19 @@ st.markdown("""
         .stRadio label {
             color: #d1b3ff !important;
             font-size: 16px !important;
+        }
+
+        /* Estilo personalizado para los cuadros de información (Ficha del Entorno) */
+        div.stAlert {
+            background-color: rgba(31, 13, 61, 0.25) !important;
+            color: #f0f0f5 !important;
+            border: 1px solid #5a2bb8 !important;
+            border-radius: 10px !important;
+        }
+        
+        /* Ajustar los textos dentro de las alertas modificadas */
+        div.stAlert p {
+            color: #e1ccff !important;
         }
 
         /* --- CONTENEDOR Y ANIMACIÓN DEL TEXTO DESLIZANTE --- */
@@ -79,6 +93,79 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+# --- FUNCIÓN ADICIONAL: GENERADOR DE REPORTE PDF ---
+def generar_pdf(ciudad, ancho, largo, info, altura, area, calaminas, costo):
+    pdf = FPDF()
+    pdf.add_page()
+    pdf.set_margins(15, 15, 15)
+    
+    # Encabezado con estética KeyzCAD (Fondo morado oscuro para el título)
+    pdf.set_fill_color(31, 13, 61)  # Color #1f0d3d
+    pdf.rect(0, 0, 210, 38, 'F')
+    
+    # Texto del Encabezado
+    pdf.set_text_color(255, 255, 255)
+    pdf.set_font("Helvetica", "B", 22)
+    pdf.cell(0, 10, "KEYZCAD STRUCTURE", ln=True, align="C")
+    pdf.set_font("Helvetica", "I", 10)
+    pdf.cell(0, 5, "Reporte Tecnico de Optimizacion Bioclimatica - FENCYT 2026", ln=True, align="C")
+    pdf.ln(15)
+    
+    # Sección 1: Detalles del Proyecto
+    pdf.set_text_color(90, 43, 184) # Morado Keyz
+    pdf.set_font("Helvetica", "B", 14)
+    pdf.cell(0, 8, "1. Datos Generales de la Evaluacion", ln=True)
+    pdf.set_draw_color(90, 43, 184)
+    pdf.line(15, pdf.get_y(), 195, pdf.get_y())
+    pdf.ln(4)
+    
+    pdf.set_text_color(50, 50, 50)
+    pdf.set_font("Helvetica", "", 11)
+    pdf.cell(90, 7, f"Localidad Seleccionada: {ciudad}", ln=False)
+    pdf.cell(90, 7, f"Estacion Referencial: {info['estacion']}", ln=True)
+    pdf.cell(90, 7, f"Ancho de la Estructura: {ancho} m", ln=False)
+    pdf.cell(90, 7, f"Largo de la Estructura: {largo} m", ln=True)
+    pdf.ln(8)
+    
+    # Sección 2: Diseño Geométrico y Datos Climáticos
+    pdf.set_text_color(90, 43, 184)
+    pdf.set_font("Helvetica", "B", 14)
+    pdf.cell(0, 8, "2. Analisis Estructural y Climatico", ln=True)
+    pdf.line(15, pdf.get_y(), 195, pdf.get_y())
+    pdf.ln(4)
+    
+    pdf.set_text_color(50, 50, 50)
+    pdf.set_font("Helvetica", "", 11)
+    pdf.cell(90, 7, f"Clima de la Zona: {info['clima']}", ln=False)
+    pdf.cell(90, 7, f"Angulo de Inclinacion Recomendado: {info['angulo_ideal']} grados", ln=True)
+    pdf.cell(90, 7, f"Altura del Caballete (Central): {round(altura, 2)} m", ln=False)
+    pdf.cell(90, 7, f"Alero Minimo Recomendado: {info['alero_metros']} m", ln=True)
+    pdf.cell(0, 7, f"Area Inclinada Real de Cobertura: {round(area, 2)} m2", ln=True)
+    pdf.ln(8)
+    
+    # Sección 3: Logística, Materiales y Presupuesto
+    pdf.set_text_color(90, 43, 184)
+    pdf.set_font("Helvetica", "B", 14)
+    pdf.cell(0, 8, "3. Logistica y Presupuesto Estimado", ln=True)
+    pdf.line(15, pdf.get_y(), 195, pdf.get_y())
+    pdf.ln(4)
+    
+    pdf.set_text_color(50, 50, 50)
+    pdf.set_font("Helvetica", "", 11)
+    pdf.multi_cell(0, 6, f"Material Ecologico Alternativo Recomendado:\n{info['material_eco']}")
+    pdf.ln(2)
+    pdf.cell(90, 7, f"Cantidad de Calaminas Estandar Requeridas: {calaminas} planchas", ln=False)
+    pdf.cell(90, 7, f"Presupuesto de Materiales Sugerido: S/. {round(costo, 2)} Soles", ln=True)
+    pdf.ln(12)
+    
+    # Pie de página / Firmas de validación
+    pdf.set_text_color(120, 120, 120)
+    pdf.set_font("Helvetica", "I", 9)
+    pdf.cell(0, 5, "Calculos estructurales generados algoritmicamente por KeyzCAD Structure v1.0.", ln=True, align="C")
+    pdf.cell(0, 5, "Basado en exigencias tecnicas de las Normas RNE E.080 y E.020.", ln=True, align="C")
+    
+    return pdf.output()
+
 # Base de datos cargada en la aplicación web
 datos_peru = {
     "Nueva Cajamarca": {
@@ -123,7 +210,6 @@ if seccion_activa == "Inicio":
     st.title("🔑 KeyzCAD Structure")
     st.subheader("Optimización de Techos Bioclimáticos - FENCYT 2026")
     
-    # NUEVO: Insertamos el bloque HTML con la animación de texto deslizante
     st.markdown("""
         <div class="contenedor-animado">
             <span class="texto-estatico">Especializado en</span>
@@ -165,7 +251,7 @@ if seccion_activa == "Inicio":
     
     with col2:
         st.markdown("### 🛠️ Ficha del Entorno")
-        st.success("**Desarrollo:** Python 3\n\n**Framework:** Streamlit Web\n\n**Área:** Tecnología e Innovación")
+        st.info("**🔧 Desarrollo:** Python 3\n\n**📦 Framework:** Streamlit Web\n\n**🧬 Área:** Tecnología e Innovación")
 
 # -------------------------------------------------------------------
 # SECCIÓN 2: SIMULADOR (Tus cálculos y panel interactivo)
@@ -213,6 +299,29 @@ elif seccion_activa == "KeyzCAD Simulador":
         st.subheader("💰 Presupuesto Estimado y Logística")
         st.success(f"**Costo Estimado Materiales:** S/. {round(costo_total, 2)} Soles")
         st.warning(f"**Volumen Comercial:** Requiere aprox. **{cantidad_calaminas}** planchas de calamina estándar.")
+
+    # --- NUEVO: BOTÓN PARA GENERAR Y DESCARGAR EL PDF ---
+    st.write("---")
+    st.subheader("📋 Documentación de Ingeniería")
+    
+    # Generamos el PDF con los datos actuales de los sliders
+    pdf_data = generar_pdf(
+        ciudad=ciudad, 
+        ancho=ancho, 
+        largo=largo, 
+        info=info, 
+        altura=altura_centro, 
+        area=area_inclinada, 
+        calaminas=cantidad_calaminas, 
+        costo=costo_total
+    )
+    
+    st.download_button(
+        label="📥 Descargar Reporte Técnico (PDF)",
+        data=pdf_data,
+        file_name=f"Reporte_KeyzCAD_{ciudad.replace(' ', '_')}.pdf",
+        mime="application/pdf"
+    )
 
 # -------------------------------------------------------------------
 # SECCIÓN 3: SUSTENTO (Tus escudos de defensa científica)
