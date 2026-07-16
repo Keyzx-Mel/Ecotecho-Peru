@@ -424,7 +424,7 @@ if seccion_activa == "Inicio":
         )
         # Imagen para el problema
         try:
-            st.image("construcion.jpg", caption="Esquema del problema de autoconstrucción informal y fallas por humedad.", use_container_width=True)
+            st.image("construcion.jpg", caption="Muestra de construcción informal en el Perú.", use_container_width=True)
         except Exception:
             st.warning("⚠️ Coloca una imagen llamada 'problema.png' en la carpeta de tu proyecto para mostrarla aquí.")
             
@@ -440,7 +440,7 @@ if seccion_activa == "Inicio":
         )
         # Imagen para la solución
         try:
-            st.image("Democratizar.jpeg", caption="Objetivos de optimización del alero y control del estrés térmico.", use_container_width=True)
+            st.image("Democratizar.jpeg", caption="Democratizar herramientas de construcción.", use_container_width=True)
         except Exception:
             st.warning("⚠️ Coloca una imagen llamada 'solucion.png' en la carpeta de tu proyecto para mostrarla aquí.")
 
@@ -456,7 +456,7 @@ if seccion_activa == "Inicio":
         )
         # Imagen para el software
         try:
-            st.image("Planos.jpg", caption="Diagrama de flujo del procesamiento de datos en KeyzCAD.", use_container_width=True)
+            st.image("Planos.jpg", caption="Planos objetivos con KeyzCAD.", use_container_width=True)
         except Exception:
             st.warning("⚠️ Coloca una imagen llamada 'funcionamiento.png' en la carpeta de tu proyecto para mostrarla aquí.")
     
