@@ -337,6 +337,7 @@ if seccion_activa == "Inicio":
         st.markdown("### ❓ ¿Cuál es el problema?")
         st.info(
             "En regiones amazónico-andinas y pluviales del Perú, la autoconstrucción informal "
+            "representa aproximadamente el 71% de todas las edificaciones en el Perú, "
             "diseña techos basados en aproximaciones empíricas ('al ojo'). Ante el cambio climático, "
             "las lluvias torrenciales atípicas superan los límites tradicionales, provocando fallas "
             "estructurales, filtraciones severas e inundaciones por pendientes insuficientes o aleros muy cortos."
