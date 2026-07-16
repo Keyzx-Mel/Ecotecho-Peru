@@ -167,30 +167,137 @@ def generar_pdf(ciudad, ancho, largo, info, altura, area, calaminas, costo, pend
     
     return bytes(pdf.output())
     
-# Base de datos adaptada a las pendientes mínimas requeridas por normativa
+# Base de datos optimizada por Macroregiones y Departamentos del Perú
 datos_peru = {
-    "Nueva Cajamarca": {
-        "estacion": "Estación Naranjillo (Rioja)", "clima": "Selva Alta / Lluvias Torrenciales",
-        "pendiente_porcentaje": 30, "alero_metros": 1.2, "costo_m2_soles": 48,
-        "material_eco": "Madera local, caña brava con barro o tejas artesanales"
+    "COSTA": {
+        "Tumbes": {
+            "estacion": "Macroregión Costa (Monitoreo Fenómeno El Niño)", 
+            "clima": "Costa Tropical / Lluvias de Verano",
+            "pendiente_porcentaje": 15, "alero_metros": 1.0,
+            "material_eco": "Paneles de quincha mejorada o bloques de tierra comprimida (BTC)"
+        },
+        "Piura": {
+            "estacion": "Macroregión Costa (Monitoreo Fenómeno El Niño)", 
+            "clima": "Costa Desértica / Eventos Pluviales Extremos",
+            "pendiente_porcentaje": 15, "alero_metros": 1.0,
+            "material_eco": "Paneles de quincha mejorada o bloques de tierra comprimida (BTC)"
+        },
+        "Lambayeque": {
+            "estacion": "Macroregión Costa", "clima": "Costa Árida / Templada",
+            "pendiente_porcentaje": 10, "alero_metros": 0.8,
+            "material_eco": "Ladrillos de adobe estabilizado o paneles de quincha"
+        },
+        "La Libertad": {
+            "estacion": "Macroregión Costa", "clima": "Costa Árida / Templada",
+            "pendiente_porcentaje": 10, "alero_metros": 0.8,
+            "material_eco": "Adobe estabilizado y caña brava local estructurada"
+        },
+        "Áncash": {
+            "estacion": "Macroregión Costa", "clima": "Costa Árida / Valles Templados",
+            "pendiente_porcentaje": 10, "alero_metros": 0.8,
+            "material_eco": "Bloques de tierra comprimida (BTC) o piedra local"
+        },
+        "Lima": {
+            "estacion": "Macroregión Costa", "clima": "Costa Árida / Alta Humedad",
+            "pendiente_porcentaje": 10, "alero_metros": 0.6,
+            "material_eco": "Estructuras de bambú tratadas o paneles prensados de fibra de caña"
+        },
+        "Ica": {
+            "estacion": "Macroregión Costa", "clima": "Costa Desértica / Cálida",
+            "pendiente_porcentaje": 10, "alero_metros": 0.6,
+            "material_eco": "Adobe tradicional reforzado con mallas de driza"
+        },
+        "Arequipa": {
+            "estacion": "Macroregión Costa", "clima": "Serranía Esteparia / Seco y Semicálido",
+            "pendiente_porcentaje": 10, "alero_metros": 0.8,
+            "material_eco": "Sillar volcánico tallado o piedra block con mortero de cal"
+        },
+        "Moquegua": {
+            "estacion": "Macroregión Costa", "clima": "Serranía Esteparia / Templado Cálido",
+            "pendiente_porcentaje": 10, "alero_metros": 0.7,
+            "material_eco": "Adobe estabilizado o piedra de canto rodado local"
+        },
+        "Tacna": {
+            "estacion": "Macroregión Costa", "clima": "Costa Árida / Templado Frío",
+            "pendiente_porcentaje": 10, "alero_metros": 0.7,
+            "material_eco": "Mampostería de piedra local y techos de caña"
+        }
     },
-    "Tarapoto": {
-        "estacion": "Estación El Porvenir (San Martín)", "clima": "Selva Alta / Cálido y Lluvioso",
-        "pendiente_porcentaje": 30, "alero_metros": 1.3, "costo_m2_soles": 45,
-        "material_eco": "Palma de irapay trenzada o bambú local estructurado"
+    "SIERRA": {
+        "Cajamarca": {
+            "estacion": "Macroregión Sierra", "clima": "Sierra / Templado y Lluvias Estacionales",
+            "pendiente_porcentaje": 20, "alero_metros": 1.0,
+            "material_eco": "Tejas artesanales de arcilla cocida con soporte de madera local"
+        },
+        "Huánuco": {
+            "estacion": "Macroregión Sierra", "clima": "Sierra / Valles Templados",
+            "pendiente_porcentaje": 20, "alero_metros": 1.0,
+            "material_eco": "Mampostería de tapial reforzado con paja local"
+        },
+        "Pasco": {
+            "estacion": "Macroregión Sierra", "clima": "Sierra Alta / Frígido con Granizadas",
+            "pendiente_porcentaje": 20, "alero_metros": 1.1,
+            "material_eco": "Piedra local con mortero aislante y techado de teja andina"
+        },
+        "Junín": {
+            "estacion": "Macroregión Sierra", "clima": "Sierra Central / Templado y Frío",
+            "pendiente_porcentaje": 20, "alero_metros": 1.0,
+            "material_eco": "Estructuras de tapia pisada y cobertura de arcilla cocida"
+        },
+        "Huancavelica": {
+            "estacion": "Macroregión Sierra", "clima": "Sierra Alta / Frío con Lluvias Intensas",
+            "pendiente_porcentaje": 20, "alero_metros": 1.0,
+            "material_eco": "Paredes de tapial y techado andino sobre vigas de eucalipto"
+        },
+        "Ayacucho": {
+            "estacion": "Macroregión Sierra", "clima": "Sierra Central / Templado Seco",
+            "pendiente_porcentaje": 20, "alero_metros": 0.9,
+            "material_eco": "Tejas de arcilla sobre entramado de caña y barro (torta de barro)"
+        },
+        "Apurímac": {
+            "estacion": "Macroregión Sierra", "clima": "Sierra Central / Valles Profundos",
+            "pendiente_porcentaje": 20, "alero_metros": 1.0,
+            "material_eco": "Adobe tradicional reforzado y madera de eucalipto"
+        },
+        "Cusco": {
+            "estacion": "Macroregión Sierra", "clima": "Sierra Sur / Templado Frío con Lluvias",
+            "pendiente_porcentaje": 20, "alero_metros": 1.1,
+            "material_eco": "Muros de adobe con paja andina y cobertura de tejas cocidas artesanales"
+        },
+        "Puno": {
+            "estacion": "Macroregión Sierra", "clima": "Altiplano / Frígido y Seco con Granizadas",
+            "pendiente_porcentaje": 20, "alero_metros": 1.2,
+            "material_eco": "Bloques de totora densificada para aislamiento térmico y muros de adobe de gran espesor"
+        }
     },
-    "Iquitos": {
-        "estacion": "Estación Punchana (Loreto)", "clima": "Selva Baja / Lluvias Constantes Todo el Año",
-        "pendiente_porcentaje": 30, "alero_metros": 1.5, "costo_m2_soles": 50,
-        "material_eco": "Hojas de palma tejidas y columnas de madera Copaiba certificada"
-    },
-    "Piura": {
-        "estacion": "Estación Miraflores (Piura)", "clima": "Costa Desértica / Estacional (Fenómeno El Niño)",
-        "pendiente_porcentaje": 15, "alero_metros": 1.0, "costo_m2_soles": 55,
-        "material_eco": "Paneles de quincha mejorada o bloques de tierra comprimida (BTC)"
+    "SELVA": {
+        "Loreto": {
+            "estacion": "Macroregión Selva", "clima": "Selva Baja / Lluvias Constantes Todo el Año",
+            "pendiente_porcentaje": 30, "alero_metros": 1.5,
+            "material_eco": "Hojas de palma tejidas y columnas de madera Copaiba certificada"
+        },
+        "San Martín": {
+            "estacion": "Macroregión Selva", "clima": "Selva Alta (Amazonas-Andina) / Cálido y Lluvioso",
+            "pendiente_porcentaje": 30, "alero_metros": 1.2,
+            "material_eco": "Bambú local estructurado o palma de irapay trenzada"
+        },
+        "Ucayali": {
+            "estacion": "Macroregión Selva", "clima": "Selva Baja / Muy Cálido y Lluvia Torrencial",
+            "pendiente_porcentaje": 30, "alero_metros": 1.3,
+            "material_eco": "Cobertura de hojas de palma y vigas estructurales de madera capirona"
+        },
+        "Madre de Dios": {
+            "estacion": "Macroregión Selva", "clima": "Selva Baja / Tropical Húmedo Lluvioso",
+            "pendiente_porcentaje": 30, "alero_metros": 1.4,
+            "material_eco": "Tejido de hojas de palma real y columnas de bambú gigante (guadua)"
+        },
+        "Amazonas": {
+            "estacion": "Macroregión Selva", "clima": "Selva Alta / Templado Cálido con Neblina",
+            "pendiente_porcentaje": 30, "alero_metros": 1.2,
+            "material_eco": "Madera local con recubrimiento orgánico protector e impermeabilizante"
+        }
     }
 }
-
 # --- IMAGEN DE LOGO EN LA BARRA LATERAL ---
 URL_DEL_LOGO = "logo_keyz.png"
 
@@ -260,13 +367,21 @@ if seccion_activa == "Inicio":
 elif seccion_activa == "KeyzCAD Simulador":
     st.title("📊 Panel de Simulación y Modelamiento Estructural")
     
-    st.sidebar.write("---")
+   st.sidebar.write("---")
     st.sidebar.header("⚙️ Configuración")
-    ciudad = st.sidebar.selectbox("Selecciona la localidad:", list(datos_peru.keys()))
+    
+    # 1. Primer selector: Escoger la Macroregión Natural
+    macroregion = st.sidebar.selectbox("Selecciona la Región Natural:", list(datos_peru.keys()))
+    
+    # 2. Segundo selector: Se filtra automáticamente según la región elegida
+    departamentos_disponibles = list(datos_peru[macroregion].keys())
+    ciudad = st.sidebar.selectbox("Selecciona el Departamento:", departamentos_disponibles)
+    
     ancho = st.sidebar.slider("Ancho de la casa (metros):", 3.0, 15.0, 6.0, 0.5)
     largo = st.sidebar.slider("Largo de la casa (metros):", 4.0, 20.0, 8.0, 0.5)
 
-    info = datos_peru[ciudad]
+    # Obtenemos la información basándonos en la macroregión y el departamento seleccionado
+    info = datos_peru[macroregion][ciudad]
     pendiente = info["pendiente_porcentaje"]
 
     # --- NUEVOS CÁLCULOS MATEMÁTICOS DINÁMICOS CON MEDIDAS REALES ---
