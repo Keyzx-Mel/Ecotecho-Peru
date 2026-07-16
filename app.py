@@ -94,7 +94,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # --- FUNCIÓN ADICIONAL: GENERADOR DE REPORTE PDF ---
-def generar_pdf(ciudad, ancho, largo, info, altura, area, calaminas, costo):
+def generar_pdf(ciudad, ancho, largo, info, altura, area, calaminas, costo, pendiente, angulo_grados):
     pdf = FPDF()
     pdf.add_page()
     pdf.set_margins(15, 15, 15)
@@ -137,10 +137,11 @@ def generar_pdf(ciudad, ancho, largo, info, altura, area, calaminas, costo):
     pdf.set_text_color(50, 50, 50)
     pdf.set_font("Helvetica", "", 11)
     pdf.cell(90, 7, f"Clima de la Zona: {info['clima']}", ln=False)
-    pdf.cell(90, 7, f"Angulo de Inclinacion Recomendado: {info['angulo_ideal']} grados", ln=True)
-    pdf.cell(90, 7, f"Altura del Caballete (Central): {round(altura, 2)} m", ln=False)
-    pdf.cell(90, 7, f"Alero Minimo Recomendado: {info['alero_metros']} m", ln=True)
-    pdf.cell(0, 7, f"Area Inclinada Real de Cobertura: {round(area, 2)} m2", ln=True)
+    pdf.cell(90, 7, f"Pendiente de Diseño: {pendiente}%", ln=True)
+    pdf.cell(90, 7, f"Angulo Calculado: {round(angulo_grados, 2)} grados", ln=False)
+    pdf.cell(90, 7, f"Altura del Caballete (Central): {round(altura, 2)} m", ln=True)
+    pdf.cell(90, 7, f"Alero Minimo Recomendado: {info['alero_metros']} m", ln=False)
+    pdf.cell(90, 7, f"Area Inclinada Real de Cobertura: {round(area, 2)} m2", ln=True)
     pdf.ln(8)
     
     # Sección 3: Logística, Materiales y Presupuesto
@@ -166,26 +167,26 @@ def generar_pdf(ciudad, ancho, largo, info, altura, area, calaminas, costo):
     
     return bytes(pdf.output())
     
-# Base de datos cargada en la aplicación web
+# Base de datos adaptada a las pendientes mínimas requeridas por normativa
 datos_peru = {
     "Nueva Cajamarca": {
         "estacion": "Estación Naranjillo (Rioja)", "clima": "Selva Alta / Lluvias Torrenciales",
-        "angulo_ideal": 35, "alero_metros": 1.2, "costo_m2_soles": 48,
+        "pendiente_porcentaje": 30, "alero_metros": 1.2, "costo_m2_soles": 48,
         "material_eco": "Madera local, caña brava con barro o tejas artesanales"
     },
     "Tarapoto": {
         "estacion": "Estación El Porvenir (San Martín)", "clima": "Selva Alta / Cálido y Lluvioso",
-        "angulo_ideal": 40, "alero_metros": 1.3, "costo_m2_soles": 45,
+        "pendiente_porcentaje": 30, "alero_metros": 1.3, "costo_m2_soles": 45,
         "material_eco": "Palma de irapay trenzada o bambú local estructurado"
     },
     "Iquitos": {
         "estacion": "Estación Punchana (Loreto)", "clima": "Selva Baja / Lluvias Constantes Todo el Año",
-        "angulo_ideal": 45, "alero_metros": 1.5, "costo_m2_soles": 50,
+        "pendiente_porcentaje": 30, "alero_metros": 1.5, "costo_m2_soles": 50,
         "material_eco": "Hojas de palma tejidas y columnas de madera Copaiba certificada"
     },
     "Piura": {
         "estacion": "Estación Miraflores (Piura)", "clima": "Costa Desértica / Estacional (Fenómeno El Niño)",
-        "angulo_ideal": 25, "alero_metros": 1.0, "costo_m2_soles": 55,
+        "pendiente_porcentaje": 15, "alero_metros": 1.0, "costo_m2_soles": 55,
         "material_eco": "Paneles de quincha mejorada o bloques de tierra comprimida (BTC)"
     }
 }
@@ -266,11 +267,29 @@ elif seccion_activa == "KeyzCAD Simulador":
     largo = st.sidebar.slider("Largo de la casa (metros):", 4.0, 20.0, 8.0, 0.5)
 
     info = datos_peru[ciudad]
+    pendiente = info["pendiente_porcentaje"]
 
-    mitad_ancho = ancho / 2
-    angulo_rad = math.radians(info["angulo_ideal"])
-    altura_centro = mitad_ancho * math.tan(angulo_rad)
-    area_inclinada = (ancho * largo) / math.cos(angulo_rad)
+    # --- NUEVOS CÁLCULOS MATEMÁTICOS DINÁMICOS ---
+    # 1. Distancia horizontal (mitad del ancho para techo a dos aguas)
+    distancia_horizontal = ancho / 2
+    
+    # 2. Altura del Caballete (h) calculada dinámicamente mediante la pendiente en %
+    altura_centro = (pendiente * distancia_horizontal) / 100
+    
+    # 3. Conversión de pendiente a ángulo en radianes y luego a grados sexagesimales
+    angulo_rad = math.atan(pendiente / 100)
+    angulo_grados = math.degrees(angulo_rad)
+    
+    # 4. Cálculo del Largo de la Caída (Hipotenusa) usando Pitágoras
+    # (Se le suma el alero a la distancia horizontal para una proyección de cobertura real completa)
+    dist_con_alero = distancia_horizontal + info["alero_metros"]
+    altura_con_alero = (pendiente * dist_con_alero) / 100
+    largo_caida = math.sqrt(altura_con_alero**2 + dist_con_alero**2)
+    
+    # 5. Área Real del Techo multiplicada por las 2 caídas y extendida por los aleros frontales
+    area_inclinada = (largo_caida * 2) * (largo + (2 * info["alero_metros"]))
+    
+    # 6. Presupuesto y materiales basados en el área real
     cantidad_calaminas = math.ceil(area_inclinada / 1.44)
     costo_total = area_inclinada * info["costo_m2_soles"]
 
@@ -280,13 +299,13 @@ elif seccion_activa == "KeyzCAD Simulador":
 
     col_m1, col_m2, col_m3, col_m4 = st.columns(4)
     with col_m1:
-        st.metric(label="📐 Ángulo Recomendado", value=f"{info['angulo_ideal']}°")
+        st.metric(label="📐 Ángulo Real Calculado", value=f"{round(angulo_grados, 2)}°")
     with col_m2:
         st.metric(label="⬆️ Altura Central (Caballete)", value=f"{round(altura_centro, 2)} m")
     with col_m3:
         st.metric(label="↔️ Alero Mínimo Protector", value=f"{info['alero_metros']} m")
     with col_m4:
-        st.metric(label="📐 Área Real del Techo", value=f"{round(area_inclinada, 2)} m²")
+        st.metric(label="📐 Área Real de Cobertura", value=f"{round(area_inclinada, 2)} m²")
 
     st.write("---")
 
@@ -300,11 +319,10 @@ elif seccion_activa == "KeyzCAD Simulador":
         st.success(f"**Costo Estimado Materiales:** S/. {round(costo_total, 2)} Soles")
         st.warning(f"**Volumen Comercial:** Requiere aprox. **{cantidad_calaminas}** planchas de calamina estándar.")
 
-    # --- NUEVO: BOTÓN PARA GENERAR Y DESCARGAR EL PDF ---
+    # --- BOTÓN PARA GENERAR Y DESCARGAR EL PDF CON LOS NUEVOS PARÁMETROS ---
     st.write("---")
     st.subheader("📋 Documentación de Ingeniería")
     
-    # Generamos el PDF con los datos actuales de los sliders
     pdf_data = generar_pdf(
         ciudad=ciudad, 
         ancho=ancho, 
@@ -313,7 +331,9 @@ elif seccion_activa == "KeyzCAD Simulador":
         altura=altura_centro, 
         area=area_inclinada, 
         calaminas=cantidad_calaminas, 
-        costo=costo_total
+        costo=costo_total,
+        pendiente=pendiente,
+        angulo_grados=angulo_grados
     )
     
     st.download_button(
