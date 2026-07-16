@@ -414,7 +414,7 @@ if seccion_activa == "Inicio":
     
     with col1:
         # --- PREGUNTA 1 ---
-        st.markdown("### ❓ ¿Cuál es el problema?")
+        st.markdown("### ¿Cuál es el problema?")
         st.info(
             "En las periferias urbanas y zonas rurales del Perú, la autoconstrucción informal "
             "representa aproximadamente el 71% de las viviendas a nivel nacional (superando el 80% en Lima Norte, Sur y zonas amazónicas). "
@@ -431,7 +431,7 @@ if seccion_activa == "Inicio":
         st.write("") # Espacio en blanco
 
         # --- PREGUNTA 2 ---
-        st.markdown("### 🎯 ¿Qué buscamos solucionar?")
+        st.markdown("### ¿Qué buscamos solucionar?")
         st.write(
             "Queremos **romper la brecha de acceso al conocimiento de ingeniería** democratizando el diseño preventivo de cubiertas. "
             "KeyzCAD Structure traduce fórmulas complejas del Reglamento Nacional de Edificaciones (RNE) en geometrías claras "
@@ -447,7 +447,7 @@ if seccion_activa == "Inicio":
         st.write("") # Espacio en blanco
 
         # --- PREGUNTA 3 ---
-        st.markdown("### 💻 ¿De qué trata el software?")
+        st.markdown("### ¿De qué trata el software?")
         st.write(
             "**KeyzCAD Structure** es un simulador geométrico-climático interactivo diseñado específicamente para el contexto peruano. "
             "A partir de las dimensiones de tu terreno (ancho y largo) y tu ubicación geográfica, el software calcula de forma "
@@ -468,7 +468,7 @@ if seccion_activa == "Inicio":
 # SECCIÓN 2: SIMULADOR (Cálculos y panel interactivo)
 # -------------------------------------------------------------------
 elif seccion_activa == "KeyzCAD Simulador":
-    st.title("📊 Panel de Simulación y Modelamiento Estructural")
+    st.title("Panel de Simulación y Modelamiento Estructural")
     
     # BANNER RECORDATORIO EN EL SIMULADOR
     st.markdown("""
@@ -514,7 +514,7 @@ elif seccion_activa == "KeyzCAD Simulador":
     cantidad_calaminas = math.ceil(area_inclinada / area_util_calamina)
     costo_total = cantidad_calaminas * precio_calamina
 
-    st.markdown(f"### 📍 Localidad Activa: {ciudad} ({macroregion}) | `Datos: {info['estacion']}`")
+    st.markdown(f"### Localidad Activa: {ciudad} ({macroregion}) | `Datos: {info['estacion']}`")
     st.markdown(f"**Clasificación de Entorno:** *{info['clima']}*")
     st.write("---")
 
@@ -523,28 +523,28 @@ elif seccion_activa == "KeyzCAD Simulador":
     with col_m1:
         st.markdown(f"""
             <div class="metric-card">
-                <div class="metric-title">📐 Ángulo Real Calculado</div>
+                <div class="metric-title"> Ángulo Real Calculado</div>
                 <div class="metric-value">{round(angulo_grados, 2)}°</div>
             </div>
         """, unsafe_allow_html=True)
     with col_m2:
         st.markdown(f"""
             <div class="metric-card">
-                <div class="metric-title">⬆️ Altura Caballete (H)</div>
+                <div class="metric-title"> Altura Caballete (H)</div>
                 <div class="metric-value">{round(altura_centro, 2)} m</div>
             </div>
         """, unsafe_allow_html=True)
     with col_m3:
         st.markdown(f"""
             <div class="metric-card">
-                <div class="metric-title">↔️ Alero Recomendado</div>
+                <div class="metric-title"> Alero Recomendado</div>
                 <div class="metric-value">{info['alero_metros']} m</div>
             </div>
         """, unsafe_allow_html=True)
     with col_m4:
         st.markdown(f"""
             <div class="metric-card">
-                <div class="metric-title">📐 Área Cobertura Total</div>
+                <div class="metric-title"> Área Cobertura Total</div>
                 <div class="metric-value">{round(area_inclinada, 2)} m²</div>
             </div>
         """, unsafe_allow_html=True)
@@ -553,17 +553,17 @@ elif seccion_activa == "KeyzCAD Simulador":
 
     col_inf1, col_inf2 = st.columns(2)
     with col_inf1:
-        st.subheader("🌱 Material Ecológico Sugerido")
+        st.subheader(" Material Ecológico Sugerido")
         st.info(info["material_eco"])
         
     with col_inf2:
-        st.subheader("💰 Presupuesto Estimado y Logística")
+        st.subheader(" Presupuesto Estimado y Logística")
         st.success(f"**Costo Estimado de Cobertura:** S/. {round(costo_total, 2)} Soles")
         st.warning(f"**Volumen Comercial:** Requiere aprox. **{cantidad_calaminas}** planchas de calamina estándar (3.6 m x 0.8 m).")
 
     # --- BOTÓN PARA GENERAR Y DESCARGAR EL PDF ---
     st.write("---")
-    st.subheader("📋 Documentación de Ingeniería")
+    st.subheader(" Documentación de Ingeniería")
     
     pdf_data = generar_pdf(
         ciudad=ciudad, 
@@ -579,7 +579,7 @@ elif seccion_activa == "KeyzCAD Simulador":
     )
     
     st.download_button(
-        label="📥 Descargar Reporte Técnico (PDF)",
+        label="Descargar Reporte Técnico (PDF)",
         data=pdf_data,
         file_name=f"Reporte_KeyzCAD_{ciudad.replace(' ', '_')}.pdf",
         mime="application/pdf",
@@ -590,7 +590,7 @@ elif seccion_activa == "KeyzCAD Simulador":
 # SECCIÓN 3: SUSTENTO (Tus escudos de defensa científica)
 # -------------------------------------------------------------------
 elif seccion_activa == "Sustento Científico y Normas":
-    st.title("📚 Sustento Técnico, Científico y Marco Normativo")
+    st.title(" Sustento Técnico, Científico y Marco Normativo")
     st.markdown("### El pilar de cálculo detrás de KeyzCAD Structure")
     
     st.write(
@@ -601,7 +601,7 @@ elif seccion_activa == "Sustento Científico y Normas":
     
     st.markdown("---")
     
-    st.markdown("### 🏢 1. Reglamento Nacional de Edificaciones (RNE)")
+    st.markdown("###  1. Reglamento Nacional de Edificaciones (RNE)")
     st.write(
         "El diseño de coberturas e inclinaciones no se puede basar en criterios intuitivos. "
         "KeyzCAD Structure utiliza las exigencias planteadas en las siguientes normas técnicas nacionales:"
@@ -637,7 +637,7 @@ elif seccion_activa == "Sustento Científico y Normas":
         </table>
     """, unsafe_allow_html=True)
     
-    st.markdown("### 🌤️ 2. Meteorología y el Impacto del Alero (SENAMHI)")
+    st.markdown("###  2. Meteorología y el Impacto del Alero (SENAMHI)")
     st.write(
         "Debido a la ubicación geográfica de nuestro país, cercana a la línea ecuatorial, los departamentos del Perú experimentan "
         "niveles de radiación solar ultravioleta categorizados como **'Extremadamente Altos'** por el SENAMHI. "
@@ -656,7 +656,7 @@ elif seccion_activa == "Sustento Científico y Normas":
     )
 
     st.markdown("---")
-    st.markdown("### 🔬 3. Fórmulas Trigonométricas Aplicadas en el Algoritmo")
+    st.markdown("###  3. Fórmulas Trigonométricas Aplicadas en el Algoritmo")
     st.write(
         "La precisión matemática del simulador es lo que evita el sobredimensionamiento de materiales. El motor de cálculo procesa:"
     )
