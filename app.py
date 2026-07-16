@@ -413,6 +413,7 @@ if seccion_activa == "Inicio":
     col1, col2 = st.columns([2, 1])
     
     with col1:
+        # --- PREGUNTA 1 ---
         st.markdown("### ❓ ¿Cuál es el problema?")
         st.info(
             "En las periferias urbanas y zonas rurales del Perú, la autoconstrucción informal "
@@ -421,7 +422,15 @@ if seccion_activa == "Inicio":
             "El eslabón más débil es el techo: al definirse las inclinaciones de forma empírica ('al ojo'), "
             "las familias sufren filtraciones masivas, empozamientos que debilitan la estructura, calor extremo y desprendimiento de coberturas por vientos severos."
         )
-        
+        # Imagen para el problema
+        try:
+            st.image("construcion.jpg", caption="Esquema del problema de autoconstrucción informal y fallas por humedad.", use_container_width=True)
+        except Exception:
+            st.warning("⚠️ Coloca una imagen llamada 'problema.png' en la carpeta de tu proyecto para mostrarla aquí.")
+            
+        st.write("") # Espacio en blanco
+
+        # --- PREGUNTA 2 ---
         st.markdown("### 🎯 ¿Qué buscamos solucionar?")
         st.write(
             "Queremos **romper la brecha de acceso al conocimiento de ingeniería** democratizando el diseño preventivo de cubiertas. "
@@ -429,7 +438,15 @@ if seccion_activa == "Inicio":
             "para prevenir colapsos, mitigar filtraciones nocivas para la salud (hongos y humedad), evitar el estrés térmico sobre "
             "los muros y proteger la economía familiar optimizando la cantidad exacta de materiales en obra."
         )
-        
+        # Imagen para la solución
+        try:
+            st.image("Democratizar.jpg", caption="Objetivos de optimización del alero y control del estrés térmico.", use_container_width=True)
+        except Exception:
+            st.warning("⚠️ Coloca una imagen llamada 'solucion.png' en la carpeta de tu proyecto para mostrarla aquí.")
+
+        st.write("") # Espacio en blanco
+
+        # --- PREGUNTA 3 ---
         st.markdown("### 💻 ¿De qué trata el software?")
         st.write(
             "**KeyzCAD Structure** es un simulador geométrico-climático interactivo diseñado específicamente para el contexto peruano. "
@@ -437,6 +454,11 @@ if seccion_activa == "Inicio":
             "inmediata la inclinación óptima del tejado en grados, la altura del caballete central y la longitud del alero protector "
             "para repeler la radiación solar extrema y los azotes de la lluvia torrencial."
         )
+        # Imagen para el software
+        try:
+            st.image("Planos.jpg", caption="Diagrama de flujo del procesamiento de datos en KeyzCAD.", use_container_width=True)
+        except Exception:
+            st.warning("⚠️ Coloca una imagen llamada 'funcionamiento.png' en la carpeta de tu proyecto para mostrarla aquí.")
     
     with col2:
         st.markdown("### 🛠️ Ficha del Entorno")
