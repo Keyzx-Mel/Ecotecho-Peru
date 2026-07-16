@@ -269,7 +269,7 @@ elif seccion_activa == "KeyzCAD Simulador":
     info = datos_peru[ciudad]
     pendiente = info["pendiente_porcentaje"]
 
-   # --- NUEVOS CÁLCULOS MATEMÁTICOS DINÁMICOS CON MEDIDAS REALES ---
+    # --- NUEVOS CÁLCULOS MATEMÁTICOS DINÁMICOS CON MEDIDAS REALES ---
     # 1. Distancia horizontal (mitad del ancho para techo a dos aguas)
     distancia_horizontal = ancho / 2
     
@@ -317,7 +317,7 @@ elif seccion_activa == "KeyzCAD Simulador":
         st.subheader("🌱 Material Ecológico Sugerido")
         st.info(info["material_eco"])
         
-  with col_inf2:
+    with col_inf2:
         st.subheader("💰 Presupuesto Estimado y Logística")
         st.success(f"**Costo Estimado de Cobertura:** S/. {round(costo_total, 2)} Soles")
         st.warning(f"**Volumen Comercial:** Requiere aprox. **{cantidad_calaminas}** planchas de calamina estándar (3.6 m x 0.8 m).")
@@ -345,7 +345,6 @@ elif seccion_activa == "KeyzCAD Simulador":
         file_name=f"Reporte_KeyzCAD_{ciudad.replace(' ', '_')}.pdf",
         mime="application/pdf"
     )
-
 # -------------------------------------------------------------------
 # SECCIÓN 3: SUSTENTO (Tus escudos de defensa científica)
 # -------------------------------------------------------------------
