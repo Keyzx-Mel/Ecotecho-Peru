@@ -440,7 +440,7 @@ if seccion_activa == "Inicio":
         )
         # Imagen para la solución
         try:
-            st.image("Democratizar.jpg", caption="Objetivos de optimización del alero y control del estrés térmico.", use_container_width=True)
+            st.image("Democratizar.jpeg", caption="Objetivos de optimización del alero y control del estrés térmico.", use_container_width=True)
         except Exception:
             st.warning("⚠️ Coloca una imagen llamada 'solucion.png' en la carpeta de tu proyecto para mostrarla aquí.")
 
