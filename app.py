@@ -451,84 +451,8 @@ elif seccion_activa == "KeyzCAD Simulador":
         label="📥 Descargar Reporte Técnico (PDF)",
         data=pdf_data,
         file_name=f"Reporte_KeyzCAD_{ciudad.replace(' ', '_')}.pdf",
-        mime="application/pdf"
-    )
-
-    # --- NUEVOS CÁLCULOS MATEMÁTICOS DINÁMICOS CON MEDIDAS REALES ---
-    # 1. Distancia horizontal (mitad del ancho para techo a dos aguas)
-    distancia_horizontal = ancho / 2
-    
-    # 2. Altura del Caballete (h) calculada dinámicamente mediante la pendiente en %
-    altura_centro = (pendiente * distancia_horizontal) / 100
-    
-    # 3. Conversión de pendiente a ángulo en radianes y luego a grados sexagesimales
-    angulo_rad = math.atan(pendiente / 100)
-    angulo_grados = math.degrees(angulo_rad)
-    
-    # 4. Cálculo del Largo de la Caída (Hipotenusa) usando Pitágoras
-    # (Se le suma el alero a la distancia horizontal para una proyección de cobertura real completa)
-    dist_con_alero = distancia_horizontal + info["alero_metros"]
-    altura_con_alero = (pendiente * dist_con_alero) / 100
-    largo_caida = math.sqrt(altura_con_alero**2 + dist_con_alero**2)
-    
-    # 5. Área Real del Techo multiplicada por las 2 caídas y extendida por los aleros frontales
-    area_inclinada = (largo_caida * 2) * (largo + (2 * info["alero_metros"]))
-    
-    # 6. --- NUEVO CÁLCULO DE CALAMINAS COMERCIALES (3.6m x 0.8m) ---
-    area_util_calamina = 2.5  # 2.88m2 teóricos reducidos a 2.5m2 por traslapes de seguridad
-    precio_calamina = 28.0    # S/. 28.00 por plancha
-    
-    cantidad_calaminas = math.ceil(area_inclinada / area_util_calamina)
-    costo_total = cantidad_calaminas * precio_calamina
-
-    st.markdown(f"### 📍 Localidad Activa: {ciudad} | `Datos: {info['estacion']}`")
-    st.markdown(f"**Clasificación de Entorno:** *{info['clima']}*")
-    st.write("---")
-
-    col_m1, col_m2, col_m3, col_m4 = st.columns(4)
-    with col_m1:
-        st.metric(label="📐 Ángulo Real Calculado", value=f"{round(angulo_grados, 2)}°")
-    with col_m2:
-        st.metric(label="⬆️ Altura Central (Caballete)", value=f"{round(altura_centro, 2)} m")
-    with col_m3:
-        st.metric(label="↔️ Alero Mínimo Protector", value=f"{info['alero_metros']} m")
-    with col_m4:
-        st.metric(label="📐 Área Real de Cobertura", value=f"{round(area_inclinada, 2)} m²")
-
-    st.write("---")
-
-    col_inf1, col_inf2 = st.columns(2)
-    with col_inf1:
-        st.subheader("🌱 Material Ecológico Sugerido")
-        st.info(info["material_eco"])
-        
-    with col_inf2:
-        st.subheader("💰 Presupuesto Estimado y Logística")
-        st.success(f"**Costo Estimado de Cobertura:** S/. {round(costo_total, 2)} Soles")
-        st.warning(f"**Volumen Comercial:** Requiere aprox. **{cantidad_calaminas}** planchas de calamina estándar (3.6 m x 0.8 m).")
-
-    # --- BOTÓN PARA GENERAR Y DESCARGAR EL PDF CON LOS NUEVOS PARÁMETROS ---
-    st.write("---")
-    st.subheader("📋 Documentación de Ingeniería")
-    
-    pdf_data = generar_pdf(
-        ciudad=ciudad, 
-        ancho=ancho, 
-        largo=largo, 
-        info=info, 
-        altura=altura_centro, 
-        area=area_inclinada, 
-        calaminas=cantidad_calaminas, 
-        costo=costo_total,
-        pendiente=pendiente,
-        angulo_grados=angulo_grados
-    )
-    
-    st.download_button(
-        label="📥 Descargar Reporte Técnico (PDF)",
-        data=pdf_data,
-        file_name=f"Reporte_KeyzCAD_{ciudad.replace(' ', '_')}.pdf",
-        mime="application/pdf"
+        mime="application/pdf",
+        key="btn_descarga_pdf"  # Llave única para evitar errores de ID duplicado
     )
 # -------------------------------------------------------------------
 # SECCIÓN 3: SUSTENTO (Tus escudos de defensa científica)
