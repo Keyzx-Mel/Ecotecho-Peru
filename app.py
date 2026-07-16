@@ -90,6 +90,72 @@ st.markdown("""
             66%, 91% { transform: translateY(-90px); }
             100% { transform: translateY(0); }
         }
+
+        /* Tarjetas de Métricas de Diseño */
+        .metric-card {
+            background: rgba(31, 13, 61, 0.4);
+            border: 1px solid #5a2bb8;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(90, 43, 184, 0.2);
+        }
+
+        .metric-title {
+            font-size: 14px;
+            color: #b380ff;
+            text-transform: uppercase;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .metric-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: #ffffff;
+        }
+
+        /* Banner de Descargo de Responsabilidad Profesional */
+        .banner-advertencia {
+            background: linear-gradient(90deg, #ff4b4b 0%, #990000 100%);
+            border-left: 6px solid #ffffff;
+            padding: 15px 20px;
+            border-radius: 8px;
+            color: #ffffff;
+            font-weight: 500;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 12px rgba(255, 75, 75, 0.3);
+        }
+
+        /* Tablas HTML Estilizadas */
+        .tabla-sustento {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: #121218;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #3d1f75;
+        }
+
+        .tabla-sustento th {
+            background-color: #1f0d3d;
+            color: #cc99ff;
+            text-align: left;
+            padding: 12px 15px;
+            font-weight: bold;
+            border-bottom: 2px solid #5a2bb8;
+        }
+
+        .tabla-sustento td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #1f0d3d;
+            color: #e1ccff;
+        }
+
+        .tabla-sustento tr:hover {
+            background-color: #1a1525;
+        }
     </style>
 """, unsafe_allow_html=True)
 
@@ -298,10 +364,13 @@ datos_peru = {
         }
     }
 }
-# --- IMAGEN DE LOGO EN LA BARRA LATERAL ---
-URL_DEL_LOGO = "logo_keyz.png"
 
-st.sidebar.image(URL_DEL_LOGO, use_container_width=True)
+# Intentar cargar la imagen del logo
+try:
+    st.sidebar.image("logo_keyz.png", use_container_width=True)
+except Exception:
+    pass
+
 st.sidebar.markdown("<h2 style='text-align: center; color: #cc99ff; font-size: 26px; margin-top: 5px; margin-bottom: 0px;'>KeyzCAD Pro</h2>", unsafe_allow_html=True)
 st.sidebar.write("---")
 
@@ -330,32 +399,43 @@ if seccion_activa == "Inicio":
             </div>
         </div>
     """, unsafe_allow_html=True)
+
+    # ⚠️ BANNER LLAMATIVO DE DESCARGO DE RESPONSABILIDAD
+    st.markdown("""
+        <div class="banner-advertencia">
+            <h4 style="margin: 0 0 5px 0; color: #ffffff !important; font-size: 18px;">⚠️ ADVERTENCIA DE SEGURIDAD ESTRUCTURAL</h4>
+            Este software es una herramienta estrictamente educativa y de pre-diseño orientada a mitigar la informalidad constructiva. 
+            <strong>No reemplaza bajo ninguna circunstancia el cálculo, firma ni supervisión de un Ingeniero Civil, Arquitecto o Profesional Colegiado.</strong> 
+            Si tienes la oportunidad de contratar asesoría profesional para tu obra, ¡hazlo! La seguridad de tu familia es lo primero.
+        </div>
+    """, unsafe_allow_html=True)
     
     col1, col2 = st.columns([2, 1])
     
     with col1:
         st.markdown("### ❓ ¿Cuál es el problema?")
         st.info(
-            "En regiones amazónico-andinas y pluviales del Perú, la autoconstrucción informal "
-            "representa aproximadamente el 71% de todas las edificaciones en el Perú, "
-            "diseña techos basados en aproximaciones empíricas ('al ojo'). Ante el cambio climático, "
-            "las lluvias torrenciales atípicas superan los límites tradicionales, provocando fallas "
-            "estructurales, filtraciones severas e inundaciones por pendientes insuficientes o aleros muy cortos."
+            "En las periferias urbanas y zonas rurales del Perú, la autoconstrucción informal "
+            "representa aproximadamente el 71% de las viviendas a nivel nacional (superando el 80% en Lima Norte, Sur y zonas amazónicas). "
+            "Según investigaciones de GRADE, el 97% de estas obras carece por completo de planos, criterios de habitabilidad o estudios técnicos. "
+            "El eslabón más débil es el techo: al definirse las inclinaciones de forma empírica ('al ojo'), "
+            "las familias sufren filtraciones masivas, empozamientos que debilitan la estructura, calor extremo y desprendimiento de coberturas por vientos severos."
         )
         
         st.markdown("### 🎯 ¿Qué buscamos solucionar?")
         st.write(
-            "Buscamos **democratizar el acceso al diseño técnico preventivo**. Esta herramienta automatiza "
-            "los cálculos geométricos y estructurales que un constructor local necesita, garantizando que cada "
-            "techo responda con precisión matemática a los factores de riesgo meteorológico reales de su entorno."
+            "Queremos **romper la brecha de acceso al conocimiento de ingeniería** democratizando el diseño preventivo de cubiertas. "
+            "KeyzCAD Structure traduce fórmulas complejas del Reglamento Nacional de Edificaciones (RNE) en geometrías claras "
+            "para prevenir colapsos, mitigar filtraciones nocivas para la salud (hongos y humedad), evitar el estrés térmico sobre "
+            "los muros y proteger la economía familiar optimizando la cantidad exacta de materiales en obra."
         )
         
         st.markdown("### 💻 ¿De qué trata el software?")
         st.write(
-            "**KeyzCAD Structure** es un entorno informático de simulación que procesa las dimensiones espaciales "
-            "deseadas para una vivienda y las contrasta con una base de datos climática geo-referenciada. El sistema "
-            "determina al instante alturas críticas, áreas inclinadas exactas, presupuestos aproximados y "
-            "materiales alternativos eco-amigables de bajo impacto térmico."
+            "**KeyzCAD Structure** es un simulador geométrico-climático interactivo diseñado específicamente para el contexto peruano. "
+            "A partir de las dimensiones de tu terreno (ancho y largo) y tu ubicación geográfica, el software calcula de forma "
+            "inmediata la inclinación óptima del tejado en grados, la altura del caballete central y la longitud del alero protector "
+            "para repeler la radiación solar extrema y los azotes de la lluvia torrencial."
         )
     
     with col2:
@@ -363,11 +443,18 @@ if seccion_activa == "Inicio":
         st.info("**🔧 Desarrollo:** Python 3\n\n**📦 Framework:** Streamlit Web\n\n**🧬 Área:** Tecnología e Innovación")
 
 # -------------------------------------------------------------------
-# SECCIÓN 2: SIMULADOR (Tus cálculos y panel interactivo)
+# SECCIÓN 2: SIMULADOR (Cálculos y panel interactivo)
 # -------------------------------------------------------------------
 elif seccion_activa == "KeyzCAD Simulador":
     st.title("📊 Panel de Simulación y Modelamiento Estructural")
     
+    # BANNER RECORDATORIO EN EL SIMULADOR
+    st.markdown("""
+        <div class="banner-advertencia" style="padding: 10px 15px; margin-bottom: 20px;">
+            <strong>Recuerda:</strong> Los resultados mostrados son aproximaciones matemáticas ideales y no eximen de la validación de un ingeniero civil en obra.
+        </div>
+    """, unsafe_allow_html=True)
+
     st.sidebar.write("---")
     st.sidebar.header("⚙️ Configuración")
     
@@ -381,7 +468,7 @@ elif seccion_activa == "KeyzCAD Simulador":
     ancho = st.sidebar.slider("Ancho de la casa (metros):", 3.0, 15.0, 6.0, 0.5)
     largo = st.sidebar.slider("Largo de la casa (metros):", 4.0, 20.0, 8.0, 0.5)
 
-    # Obtenemos la información basándonos en la macroregión y el departamento seleccionado
+    # Obtenemos la información basándose en la macroregión y el departamento seleccionado
     info = datos_peru[macroregion][ciudad]
     pendiente = info["pendiente_porcentaje"]
 
@@ -409,15 +496,36 @@ elif seccion_activa == "KeyzCAD Simulador":
     st.markdown(f"**Clasificación de Entorno:** *{info['clima']}*")
     st.write("---")
 
+    # Tarjetas de métricas estilizadas con HTML/CSS
     col_m1, col_m2, col_m3, col_m4 = st.columns(4)
     with col_m1:
-        st.metric(label="📐 Ángulo Real Calculado", value=f"{round(angulo_grados, 2)}°")
+        st.markdown(f"""
+            <div class="metric-card">
+                <div class="metric-title">📐 Ángulo Real Calculado</div>
+                <div class="metric-value">{round(angulo_grados, 2)}°</div>
+            </div>
+        """, unsafe_allow_html=True)
     with col_m2:
-        st.metric(label="⬆️ Altura Central (Caballete)", value=f"{round(altura_centro, 2)} m")
+        st.markdown(f"""
+            <div class="metric-card">
+                <div class="metric-title">⬆️ Altura Caballete (H)</div>
+                <div class="metric-value">{round(altura_centro, 2)} m</div>
+            </div>
+        """, unsafe_allow_html=True)
     with col_m3:
-        st.metric(label="↔️ Alero Mínimo Protector", value=f"{info['alero_metros']} m")
+        st.markdown(f"""
+            <div class="metric-card">
+                <div class="metric-title">↔️ Alero Recomendado</div>
+                <div class="metric-value">{info['alero_metros']} m</div>
+            </div>
+        """, unsafe_allow_html=True)
     with col_m4:
-        st.metric(label="📐 Área Real de Cobertura", value=f"{round(area_inclinada, 2)} m²")
+        st.markdown(f"""
+            <div class="metric-card">
+                <div class="metric-title">📐 Área Cobertura Total</div>
+                <div class="metric-value">{round(area_inclinada, 2)} m²</div>
+            </div>
+        """, unsafe_allow_html=True)
 
     st.write("---")
 
@@ -453,15 +561,96 @@ elif seccion_activa == "KeyzCAD Simulador":
         data=pdf_data,
         file_name=f"Reporte_KeyzCAD_{ciudad.replace(' ', '_')}.pdf",
         mime="application/pdf",
-        key="btn_descarga_pdf"  # Llave única para evitar errores de ID duplicado
+        key="btn_descarga_pdf"
     )
+
 # -------------------------------------------------------------------
 # SECCIÓN 3: SUSTENTO (Tus escudos de defensa científica)
 # -------------------------------------------------------------------
 elif seccion_activa == "Sustento Científico y Normas":
-    st.title("📚 Sustento Técnico y Marco Normativo")
+    st.title("📚 Sustento Técnico, Científico y Marco Normativo")
+    st.markdown("### El pilar de cálculo detrás de KeyzCAD Structure")
+    
+    st.write(
+        "Para sustentar este software de simulación matemática ante comités de evaluación y jurados científicos, "
+        "los cálculos geométricos y las bases de datos de pendientes se rigen estrictamente bajo el marco legal "
+        "vigente del **Reglamento Nacional de Edificaciones (RNE)** y datos meteorológicos oficiales del **SENAMHI**."
+    )
+    
+    st.markdown("---")
     
     st.markdown("### 🏢 1. Reglamento Nacional de Edificaciones (RNE)")
     st.write(
-        "Los ángulos de inclinación asignados en el diccionario de datos responden a las exigencias de la **Norma Técnica E.080**..."
+        "El diseño de coberturas e inclinaciones no se puede basar en criterios intuitivos. "
+        "KeyzCAD Structure utiliza las exigencias planteadas en las siguientes normas técnicas nacionales:"
     )
+    
+    # Tabla comparativa de normas aplicadas
+    st.markdown("""
+        <table class="tabla-sustento">
+            <thead>
+                <tr>
+                    <th>Norma Técnica</th>
+                    <th>Área de Aplicación</th>
+                    <th>Exigencias de Diseño Clave</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Norma CE.040 (Drenaje Pluvial)</strong></td>
+                    <td>Sistemas de escorrentía pluvial residencial y urbana.</td>
+                    <td>Obliga a diseñar pendientes que eviten por completo el estancamiento de agua y aseguren su evacuación inmediata. Establece pendientes mínimas desde el 2% hasta superiores al 15% en zonas con lluvias torrenciales de gran volumen.</td>
+                </tr>
+                <tr>
+                    <td><strong>Norma A.020 (Vivienda)</strong></td>
+                    <td>Condiciones generales de habitabilidad y confort de la edificación.</td>
+                    <td>Exige garantizar que las cubiertas actúen como un aislamiento climático hermético eficaz contra los elementos externos, protegiendo la salud interior.</td>
+                </tr>
+                <tr>
+                    <td><strong>Norma E.080 (Adobe y Tierra)</strong></td>
+                    <td>Construcciones de tierra y materiales no convencionales.</td>
+                    <td>Fija la necesidad de proteger los muros de tierra del desgaste por erosión hídrica mediante aleros prolongados en climas de alta precipitación.</td>
+                </tr>
+            </tbody>
+        </table>
+    """, unsafe_allow_html=True)
+    
+    st.markdown("### 🌤️ 2. Meteorología y el Impacto del Alero (SENAMHI)")
+    st.write(
+        "Debido a la ubicación geográfica de nuestro país, cercana a la línea ecuatorial, los departamentos del Perú experimentan "
+        "niveles de radiación solar ultravioleta categorizados como **'Extremadamente Altos'** por el SENAMHI. "
+    )
+    st.info(
+        "**Física del Estrés Térmico:** Cuando los rayos solares inciden perpendicularmente sobre muros desprotegidos de adobe, ladrillo o madera, "
+        "estos absorben calor latente, provocando dilataciones diferenciales, agrietamientos rápidos y condiciones de habitabilidad sofocantes. "
+        "A su vez, el impacto directo de las gotas de lluvia desgasta físicamente los revoques de las fachadas."
+    )
+    
+    st.write(
+        "**Solución Matemática de KeyzCAD:** Basado en las guías técnicas del SENCICO y del SENAMHI, el simulador asigna aleros prolongados "
+        "específicos (que van de 0.60 m en la Costa hasta 1.50 m en la Selva Baja). Usando relaciones trigonométricas sencillas, "
+        "esta longitud de alero garantiza que la pared quede bajo la sombra durante las horas de radiación crítica y desvíe las gotas de agua "
+        "con ángulo de caída por viento."
+    )
+
+    st.markdown("---")
+    st.markdown("### 🔬 3. Fórmulas Trigonométricas Aplicadas en el Algoritmo")
+    st.write(
+        "La precisión matemática del simulador es lo que evita el sobredimensionamiento de materiales. El motor de cálculo procesa:"
+    )
+    
+    col_f1, col_f2 = st.columns(2)
+    with col_f1:
+        st.markdown("""
+        * **Determinación de la Altura de Caballete ($H$):**
+          $$H = \\frac{\\text{Pendiente (\\%)} \\times (\\text{Ancho} / 2)}{100}$$
+        * **Ángulo de Inclinación Exacto ($\\theta$):**
+          $$\\theta = \\arctan\\left(\\frac{\\text{Pendiente (\\%)}}{100}\\right) \\times \\frac{180}{\\pi}$$
+        """)
+    with col_f2:
+        st.markdown("""
+        * **Largo de Caída con Alero ($L_{\\text{caída}}$):**
+          $$L_{\\text{caída}} = \\sqrt{(H_{\\text{con alero}})^2 + (d_{\\text{con alero}})^2}$$
+        * **Área Real Inclinada de Cobertura ($A_{\\text{real}}$):**
+          $$A_{\\text{real}} = (L_{\\text{caída}} \\times 2) \\times (\\text{Largo} + [2 \\times \\text{Alero}])$$
+        """)
