@@ -155,8 +155,8 @@ def generar_pdf(ciudad, ancho, largo, info, altura, area, calaminas, costo, pend
     pdf.set_font("Helvetica", "", 11)
     pdf.multi_cell(0, 6, f"Material Ecologico Alternativo Recomendado:\n{info['material_eco']}")
     pdf.ln(2)
-    pdf.cell(90, 7, f"Cantidad de Calaminas Estandar Requeridas: {calaminas} planchas", ln=False)
-    pdf.cell(90, 7, f"Presupuesto de Materiales Sugerido: S/. {round(costo, 2)} Soles", ln=True)
+    pdf.cell(90, 7, f"Cantidad de Calaminas (3.6m x 0.8m): {calaminas} planchas", ln=False)
+    pdf.cell(90, 7, f"Presupuesto Estimado de Calaminas: S/. {round(costo, 2)} Soles", ln=True)
     pdf.ln(12)
     
     # Pie de página / Firmas de validación
@@ -269,7 +269,7 @@ elif seccion_activa == "KeyzCAD Simulador":
     info = datos_peru[ciudad]
     pendiente = info["pendiente_porcentaje"]
 
-    # --- NUEVOS CÁLCULOS MATEMÁTICOS DINÁMICOS ---
+   # --- NUEVOS CÁLCULOS MATEMÁTICOS DINÁMICOS CON MEDIDAS REALES ---
     # 1. Distancia horizontal (mitad del ancho para techo a dos aguas)
     distancia_horizontal = ancho / 2
     
@@ -289,9 +289,12 @@ elif seccion_activa == "KeyzCAD Simulador":
     # 5. Área Real del Techo multiplicada por las 2 caídas y extendida por los aleros frontales
     area_inclinada = (largo_caida * 2) * (largo + (2 * info["alero_metros"]))
     
-    # 6. Presupuesto y materiales basados en el área real
-    cantidad_calaminas = math.ceil(area_inclinada / 1.44)
-    costo_total = area_inclinada * info["costo_m2_soles"]
+    # 6. --- NUEVO CÁLCULO DE CALAMINAS COMERCIALES (3.6m x 0.8m) ---
+    area_util_calamina = 2.5  # 2.88m2 teóricos reducidos a 2.5m2 por traslapes de seguridad
+    precio_calamina = 28.0    # S/. 28.00 por plancha
+    
+    cantidad_calaminas = math.ceil(area_inclinada / area_util_calamina)
+    costo_total = cantidad_calaminas * precio_calamina
 
     st.markdown(f"### 📍 Localidad Activa: {ciudad} | `Datos: {info['estacion']}`")
     st.markdown(f"**Clasificación de Entorno:** *{info['clima']}*")
@@ -314,10 +317,10 @@ elif seccion_activa == "KeyzCAD Simulador":
         st.subheader("🌱 Material Ecológico Sugerido")
         st.info(info["material_eco"])
         
-    with col_inf2:
+  with col_inf2:
         st.subheader("💰 Presupuesto Estimado y Logística")
-        st.success(f"**Costo Estimado Materiales:** S/. {round(costo_total, 2)} Soles")
-        st.warning(f"**Volumen Comercial:** Requiere aprox. **{cantidad_calaminas}** planchas de calamina estándar.")
+        st.success(f"**Costo Estimado de Cobertura:** S/. {round(costo_total, 2)} Soles")
+        st.warning(f"**Volumen Comercial:** Requiere aprox. **{cantidad_calaminas}** planchas de calamina estándar (3.6 m x 0.8 m).")
 
     # --- BOTÓN PARA GENERAR Y DESCARGAR EL PDF CON LOS NUEVOS PARÁMETROS ---
     st.write("---")
