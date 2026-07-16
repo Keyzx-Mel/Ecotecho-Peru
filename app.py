@@ -367,7 +367,7 @@ if seccion_activa == "Inicio":
 elif seccion_activa == "KeyzCAD Simulador":
     st.title("📊 Panel de Simulación y Modelamiento Estructural")
     
-   st.sidebar.write("---")
+    st.sidebar.write("---")
     st.sidebar.header("⚙️ Configuración")
     
     # 1. Primer selector: Escoger la Macroregión Natural
@@ -383,6 +383,76 @@ elif seccion_activa == "KeyzCAD Simulador":
     # Obtenemos la información basándonos en la macroregión y el departamento seleccionado
     info = datos_peru[macroregion][ciudad]
     pendiente = info["pendiente_porcentaje"]
+
+    # --- CÁLCULOS MATEMÁTICOS DINÁMICOS ---
+    distancia_horizontal = ancho / 2
+    altura_centro = (pendiente * distancia_horizontal) / 100
+    
+    angulo_rad = math.atan(pendiente / 100)
+    angulo_grados = math.degrees(angulo_rad)
+    
+    dist_con_alero = distancia_horizontal + info["alero_metros"]
+    altura_con_alero = (pendiente * dist_con_alero) / 100
+    largo_caida = math.sqrt(altura_con_alero**2 + dist_con_alero**2)
+    
+    area_inclinada = (largo_caida * 2) * (largo + (2 * info["alero_metros"]))
+    
+    # --- CÁLCULO DE CALAMINAS COMERCIALES (3.6m x 0.8m) ---
+    area_util_calamina = 2.5  
+    precio_calamina = 28.0    
+    
+    cantidad_calaminas = math.ceil(area_inclinada / area_util_calamina)
+    costo_total = cantidad_calaminas * precio_calamina
+
+    st.markdown(f"### 📍 Localidad Activa: {ciudad} ({macroregion}) | `Datos: {info['estacion']}`")
+    st.markdown(f"**Clasificación de Entorno:** *{info['clima']}*")
+    st.write("---")
+
+    col_m1, col_m2, col_m3, col_m4 = st.columns(4)
+    with col_m1:
+        st.metric(label="📐 Ángulo Real Calculado", value=f"{round(angulo_grados, 2)}°")
+    with col_m2:
+        st.metric(label="⬆️ Altura Central (Caballete)", value=f"{round(altura_centro, 2)} m")
+    with col_m3:
+        st.metric(label="↔️ Alero Mínimo Protector", value=f"{info['alero_metros']} m")
+    with col_m4:
+        st.metric(label="📐 Área Real de Cobertura", value=f"{round(area_inclinada, 2)} m²")
+
+    st.write("---")
+
+    col_inf1, col_inf2 = st.columns(2)
+    with col_inf1:
+        st.subheader("🌱 Material Ecológico Sugerido")
+        st.info(info["material_eco"])
+        
+    with col_inf2:
+        st.subheader("💰 Presupuesto Estimado y Logística")
+        st.success(f"**Costo Estimado de Cobertura:** S/. {round(costo_total, 2)} Soles")
+        st.warning(f"**Volumen Comercial:** Requiere aprox. **{cantidad_calaminas}** planchas de calamina estándar (3.6 m x 0.8 m).")
+
+    # --- BOTÓN PARA GENERAR Y DESCARGAR EL PDF ---
+    st.write("---")
+    st.subheader("📋 Documentación de Ingeniería")
+    
+    pdf_data = generar_pdf(
+        ciudad=ciudad, 
+        ancho=ancho, 
+        largo=largo, 
+        info=info, 
+        altura=altura_centro, 
+        area=area_inclinada, 
+        calaminas=cantidad_calaminas, 
+        costo=costo_total,
+        pendiente=pendiente,
+        angulo_grados=angulo_grados
+    )
+    
+    st.download_button(
+        label="📥 Descargar Reporte Técnico (PDF)",
+        data=pdf_data,
+        file_name=f"Reporte_KeyzCAD_{ciudad.replace(' ', '_')}.pdf",
+        mime="application/pdf"
+    )
 
     # --- NUEVOS CÁLCULOS MATEMÁTICOS DINÁMICOS CON MEDIDAS REALES ---
     # 1. Distancia horizontal (mitad del ancho para techo a dos aguas)
