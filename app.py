@@ -3,7 +3,7 @@ import math
 from fpdf import FPDF  # Importamos la librería para crear PDFs
 
 # 1. Configuración de página ancha (Layout wide) para diseño profesional
-st.set_page_config(page_title="KeyzCAD Structure", pag icon="🔑", layout="wide")
+st.set_page_config(page_title="KeyzCAD Structure", page_icon="🔑", layout="wide")
 
 # 👁️ INYECCIÓN DE CSS: Estilos de la paleta KeyzCAD Pro y mejoras de tarjetas
 st.markdown("""
